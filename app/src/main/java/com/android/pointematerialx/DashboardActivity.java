@@ -76,6 +76,14 @@ public class DashboardActivity extends AppCompatActivity {
                 final int colorCode = getRandomColor();
                 noteViewHolder.noteBar.setBackgroundColor(noteViewHolder.view.getResources().getColor(colorCode, null));
 
+                noteViewHolder.view.setOnClickListener(v -> {
+                    Intent i = new Intent(v.getContext(), NoteDetailActivity.class);
+                    i.putExtra("title", noteAdapter.getTitle());
+                    i.putExtra("content", noteAdapter.getContent());
+                    i.putExtra("code", colorCode);
+                    v.getContext().startActivity(i);
+                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                });
 
 
             }
@@ -98,7 +106,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
         bottomAppBar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()){
+            switch (item.getItemId()) {
                 case R.id.dash_home:
                     Toast.makeText(DashboardActivity.this, "Hone Click", Toast.LENGTH_SHORT).show();
                     return true;
@@ -114,11 +122,11 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-    public static class NoteViewHolder extends RecyclerView.ViewHolder{
+    public static class NoteViewHolder extends RecyclerView.ViewHolder {
         TextView noteTitle, noteContent;
         View view, noteBar;
 
-        public NoteViewHolder(@NonNull View itemView){
+        public NoteViewHolder(@NonNull View itemView) {
             super(itemView);
             noteTitle = itemView.findViewById(R.id.note_title);
             noteContent = itemView.findViewById(R.id.note_content);

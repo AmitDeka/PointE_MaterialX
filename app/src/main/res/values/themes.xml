@@ -11,9 +11,19 @@
         <item name="colorOnSecondary">@color/Black</item>
         <!-- Status bar color. -->
 
+        <item name="android:buttonStyle">@style/MatButtonStyle</item>
+
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/White</item>
 
     </style>
 
+    <style name="MatButtonStyle" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/Black</item>
+        <item name="android:textAppearance">Bold</item>
+        <item name="backgroundTint">@color/Yellow_400</item>
+        <item name="strokeColor">@color/Yellow_400</item>
+        <item name="elevation">4dp</item>
+        <item name="rippleColor">@color/White</item>
+    </style>
 </resources>
