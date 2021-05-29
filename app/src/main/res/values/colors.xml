@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="White">#FFFFFF</color>
+    <color name="Yellow_400">#FFEE58</color>
+    <color name="Black">#000000</color>
+    <color name="Transparent">#00000000</color>
+
+    <color name="purple_randf">#AB47BC</color>
+    <color name="blue_randf">#42a5f5</color>
+    <color name="cyan_randf">#26C6DA</color>
+    <color name="green_randf">#66BB6A</color>
+    <color name="orange_randf">#FFA726</color>
+    <color name="amber_randf">#FFCA28</color>
+    <color name="red_randf">#EF5350</color>
+    <color name="lime_randf">#D4E157</color>
+</resources>

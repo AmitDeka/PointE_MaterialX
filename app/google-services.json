@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "927382877711",
+    "project_id": "pointematerialx01",
+    "storage_bucket": "pointematerialx01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927382877711:android:c9fd2767d495e3ec9f557a",
+        "android_client_info": {
+          "package_name": "com.android.pointematerialx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927382877711-achpm5n4j8k8dak2khkhqinb5502aq1f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaumzKkK0uVy-R5Qi2Zs8R5tBl52nX5TU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927382877711-achpm5n4j8k8dak2khkhqinb5502aq1f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
