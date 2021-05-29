@@ -2,9 +2,12 @@ package com.android.pointematerialx.common;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +49,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
 
         passRecoverBtn.setOnClickListener(v -> {
+            CloseKeyboard();
             ValidateSend();
         });
     }
@@ -78,6 +82,15 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         });
     }
 
+
+    private void CloseKeyboard(){
+        View view = this.getCurrentFocus();
+        if (view != null){
+            InputMethodManager methodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            methodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
+    }
 
     @Override
     public void onBackPressed() {
