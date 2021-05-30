@@ -20,7 +20,6 @@
 
     <style name="MatButtonStyle" parent="Widget.MaterialComponents.Button">
         <item name="android:textColor">@color/Black</item>
-        <item name="android:textAppearance">Bold</item>
         <item name="backgroundTint">@color/Yellow_400</item>
         <item name="strokeColor">@color/Yellow_400</item>
         <item name="elevation">4dp</item>

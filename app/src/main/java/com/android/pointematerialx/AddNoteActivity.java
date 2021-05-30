@@ -17,6 +17,8 @@ import androidx.preference.PreferenceManager;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,6 +31,7 @@ public class AddNoteActivity extends AppCompatActivity {
     private TextInputEditText addTitle, addContent;
     private ConstraintLayout addNoteActivity;
     private FirebaseFirestore fStore;
+    private FirebaseUser fUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,8 @@ public class AddNoteActivity extends AppCompatActivity {
         }
 
         fStore = FirebaseFirestore.getInstance();
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
+
         addNoteActivity = findViewById(R.id.add_Note_Activity);
         addTitle = findViewById(R.id.add_note_title);
         addContent = findViewById(R.id.add_note_content);
@@ -88,7 +93,7 @@ public class AddNoteActivity extends AppCompatActivity {
         String nTitle = addTitle.getText().toString();
         String nContent = addContent.getText().toString();
 
-        DocumentReference documentReference = fStore.collection("Note").document();
+        DocumentReference documentReference = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").document();
         Map<String, Object> note = new HashMap<>();
         note.put("title", nTitle);
         note.put("content", nContent);

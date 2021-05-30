@@ -25,6 +25,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -36,6 +38,7 @@ public class DashboardActivity extends AppCompatActivity {
 
     RecyclerView noteList;
     FirebaseFirestore fStore;
+    FirebaseUser fUser;
     FirestoreRecyclerAdapter<NoteAdapter, NoteViewHolder> NoteAdapter;
 
     @Override
@@ -62,26 +65,30 @@ public class DashboardActivity extends AppCompatActivity {
         FloatingActionButton btnAdd = findViewById(R.id.floating_addbtn);
 
         noteList = findViewById(R.id.dash_recycle_view);
+
+        fUser = FirebaseAuth.getInstance().getCurrentUser();
         fStore = FirebaseFirestore.getInstance();
 
-        Query query = fStore.collection("Note").orderBy("title", Query.Direction.DESCENDING);
+        Query query = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").orderBy("title", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<NoteAdapter> allNotes = new FirestoreRecyclerOptions.Builder<NoteAdapter>().setQuery(query, NoteAdapter.class).build();
 
         NoteAdapter = new FirestoreRecyclerAdapter<NoteAdapter, NoteViewHolder>(allNotes) {
             @Override
-            protected void onBindViewHolder(@NonNull NoteViewHolder noteViewHolder, int position, @NonNull NoteAdapter noteAdapter) {
+            protected void onBindViewHolder(@NonNull NoteViewHolder noteViewHolder, int i, @NonNull NoteAdapter noteAdapter) {
                 noteViewHolder.noteTitle.setText(noteAdapter.getTitle());
                 noteViewHolder.noteContent.setText(noteAdapter.getContent());
                 final int colorCode = getRandomColor();
                 noteViewHolder.noteBar.setBackgroundColor(noteViewHolder.view.getResources().getColor(colorCode, null));
+                final String docId =NoteAdapter.getSnapshots().getSnapshot(i).getId();
 
                 noteViewHolder.view.setOnClickListener(v -> {
-                    Intent i = new Intent(v.getContext(), NoteDetailActivity.class);
-                    i.putExtra("title", noteAdapter.getTitle());
-                    i.putExtra("content", noteAdapter.getContent());
-                    i.putExtra("code", colorCode);
-                    v.getContext().startActivity(i);
+                    Intent intent = new Intent(v.getContext(), NoteDetailActivity.class);
+                    intent.putExtra("title", noteAdapter.getTitle());
+                    intent.putExtra("content", noteAdapter.getContent());
+                    intent.putExtra("code", colorCode);
+                    intent.putExtra("noteId", docId);
+                    v.getContext().startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 });
 
