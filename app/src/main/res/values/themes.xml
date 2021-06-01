@@ -1,8 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.PointEMaterialX" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/White</item>
-        <item name="colorPrimaryDark">@color/Black</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/orange</item>
+        <item name="android:textColorPrimary">@color/grey</item>
         <!--        <item name="colorPrimaryVariant">@color/purple_700</item>-->
         <item name="colorOnPrimary">@color/Black</item>
         <!-- Secondary brand color. -->
@@ -11,18 +13,57 @@
         <item name="colorOnSecondary">@color/Black</item>
         <!-- Status bar color. -->
 
-        <item name="android:buttonStyle">@style/MatButtonStyle</item>
+<!--        <item name="android:buttonStyle">@style/MatButtonStyle</item>-->
 
-        <item name="android:windowLightStatusBar">true</item>
-        <item name="android:statusBarColor" tools:targetApi="l">@color/White</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.MaterialComponents</item>
+
+        <item name="android:windowLightStatusBar" tools:targetApi="l">true</item>
 
     </style>
-
-    <style name="MatButtonStyle" parent="Widget.MaterialComponents.Button">
-        <item name="android:textColor">@color/Black</item>
-        <item name="backgroundTint">@color/Yellow_400</item>
-        <item name="strokeColor">@color/Yellow_400</item>
-        <item name="elevation">4dp</item>
-        <item name="rippleColor">@color/White</item>
+    <style name="ShapeAppearance.MaterialComponents" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">5dp</item>
     </style>
+<!--    Toolbar-->
+    <style name="Widget.PointEMaterialX.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:backgroundTint">?attr/colorOnPrimary</item>
+        <item name="android:theme">@style/Theme.PointEMaterialX</item>
+    </style>
+
+    <!--    TextInput-->
+    <style name="Widget.PointEMaterialX.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="android:textColorHint">@color/orange</item>
+        <item name="hintTextColor">@color/orange</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="boxStrokeColor">@color/orange</item>
+
+<!--        <item name="hintTextAppearance">@style/TextAppearance.PointEMaterialX.TextInputLayout.HintText</item>-->
+    </style>
+
+    <style name="TextAppearance.PointEMaterialX.TextInputLayout.HintText" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:textColor">@color/orange</item>
+    </style>
+    <!--    Btn fill up-->
+    <style name="Widget.PointEMaterialX.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:minHeight">60dp</item>
+        <item name="android:elevation">4dp</item>
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">24sp</item>
+        <item name="backgroundTint">@color/yellow</item>
+    </style>
+
+    <!--    btn txt-->
+    <style name="Widget.PointEMaterialX.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/grey</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+<!--    <style name="MatButtonStyle" parent="Widget.MaterialComponents.Button">-->
+<!--        <item name="android:textColor">@color/Black</item>-->
+<!--        <item name="backgroundTint">@color/Yellow_400</item>-->
+<!--        <item name="strokeColor">@color/Yellow_400</item>-->
+<!--        <item name="elevation">4dp</item>-->
+<!--        <item name="rippleColor">@color/White</item>-->
+<!--    </style>-->
 </resources>

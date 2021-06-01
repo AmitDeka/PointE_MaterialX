@@ -26,7 +26,8 @@
         android:id="@+id/dash_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp" />
+        android:layout_marginTop="65dp"
+        android:layout_marginBottom="20dp"/>
 
 
     <com.google.android.material.bottomappbar.BottomAppBar

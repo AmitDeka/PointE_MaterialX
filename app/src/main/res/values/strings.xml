@@ -22,7 +22,6 @@
     <string name="hello_there">Hello There</string>
     <string name="log_in_to_continue">Log In to continue</string>
     <string name="add">Add</string>
-    <string name="log_out">Log Out</string>
     <string name="app_name2">PointE</string>
     <string name="share">Share App</string>
     <string name="rate">Rate and Review</string>
@@ -41,5 +40,6 @@
     <string name="dark_mode_def_value">MODE_NIGHT_FOLLOW_SYSTEM</string>
     <string name="note_title">Title</string>
     <string name="note_content">Note</string>
+    <string name="log_out">Log Out</string>
 
 </resources>

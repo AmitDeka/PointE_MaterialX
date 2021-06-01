@@ -5,6 +5,12 @@
     <color name="Black">#000000</color>
     <color name="Transparent">#00000000</color>
 
+
+    <color name="white">#ffffff</color>
+    <color name="grey">#2B2D42</color>
+    <color name="yellow">#faf861</color>
+    <color name="orange">#df6c53</color>
+
     <color name="purple_randf">#AB47BC</color>
     <color name="blue_randf">#42a5f5</color>
     <color name="cyan_randf">#26C6DA</color>

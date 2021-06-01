@@ -44,7 +44,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_email"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.PointEMaterialX.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -59,7 +59,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/login_pass"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            style="@style/Widget.PointEMaterialX.TextInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -80,6 +80,7 @@
         android:id="@+id/btn_forgotpass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/Widget.PointEMaterialX.TextButton"
         android:layout_gravity="end"
         android:layout_marginTop="10dp"
         android:background="@color/Transparent"
@@ -93,19 +94,21 @@
 
     <Button
         android:id="@+id/btn_login"
+        style="@style/Widget.PointEMaterialX.Button"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_marginTop="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="100dp"
         android:text="@string/login"
+        app:layout_constraintBottom_toTopOf="@+id/btn_callsignup"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_forgotpass" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_callsignup"
+        style="@style/Widget.PointEMaterialX.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginBottom="5dp"
         android:background="@color/Transparent"
         android:elevation="8dp"
         android:fontFamily="@font/ubuntu_bold"
@@ -113,6 +116,5 @@
         android:text="@string/dont_have_account"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_login" />
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
