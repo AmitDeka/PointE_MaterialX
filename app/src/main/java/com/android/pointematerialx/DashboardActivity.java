@@ -122,7 +122,8 @@ public class DashboardActivity extends AppCompatActivity {
                     startActivity(settingIntent);
                     return true;
                 case R.id.dash_about:
-                    Toast.makeText(DashboardActivity.this, "Serch", Toast.LENGTH_SHORT).show();
+                    Intent aboutIntent = new Intent(DashboardActivity.this, AboutActivity.class);
+                    startActivity(aboutIntent);
                     return true;
             }
             return false;

@@ -1,16 +1,16 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Theme.PointEMaterialX" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/white</item>
-        <item name="colorPrimaryDark">@color/white</item>
-        <item name="colorAccent">@color/orange</item>
-        <item name="android:textColorPrimary">@color/grey</item>
+        <item name="colorPrimary">@color/light</item>
+        <item name="colorPrimaryDark">@color/light</item>
+        <item name="colorAccent">@color/accent</item>
+
+<!--        <item name="android:textColorPrimary">@color/dark</item>-->
         <!--        <item name="colorPrimaryVariant">@color/purple_700</item>-->
-        <item name="colorOnPrimary">@color/Black</item>
+        <item name="colorOnPrimary">@color/dark</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/Yellow_400</item>
-        <!--        <item name="colorSecondaryVariant">@color/teal_700</item>-->
-        <item name="colorOnSecondary">@color/Black</item>
+        <item name="colorSecondary">@color/accent</item>
+        <item name="colorOnSecondary">@color/dark</item>
         <!-- Status bar color. -->
 
 <!--        <item name="android:buttonStyle">@style/MatButtonStyle</item>-->
@@ -25,37 +25,46 @@
         <item name="cornerSize">5dp</item>
     </style>
 <!--    Toolbar-->
-    <style name="Widget.PointEMaterialX.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
+    <style name="Widget.PointEMaterialX.Toolbar" parent="Widget.MaterialComponents.Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
         <item name="android:backgroundTint">?attr/colorOnPrimary</item>
         <item name="android:theme">@style/Theme.PointEMaterialX</item>
     </style>
 
+    <!--    bottom bar-->
+    <style name="Widget.PointEMaterialX.BottomBar" parent="Widget.MaterialComponents.BottomAppBar.PrimarySurface">
+<!--        <item name="android:background">?attr/colorPrimary</item>-->
+        <item name="backgroundTint">?attr/colorPrimary</item>
+        <item name="navigationIconTint">@color/accent</item>
+<!--        <item name="android:theme">@style/Theme.PointEMaterialX</item>-->
+    </style>
+
     <!--    TextInput-->
     <style name="Widget.PointEMaterialX.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="android:textColorHint">@color/orange</item>
-        <item name="hintTextColor">@color/orange</item>
+        <item name="android:textColorHint">@color/dark</item>
+        <item name="hintTextColor">@color/accent2</item>
         <item name="android:paddingBottom">10dp</item>
-        <item name="boxStrokeColor">@color/orange</item>
+        <item name="boxStrokeColor">@color/accent2</item>
+        <item name="startIconTint">@color/dark</item>
+        <item name="endIconTint">@color/dark</item>
 
 <!--        <item name="hintTextAppearance">@style/TextAppearance.PointEMaterialX.TextInputLayout.HintText</item>-->
     </style>
 
     <style name="TextAppearance.PointEMaterialX.TextInputLayout.HintText" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="android:textColor">@color/orange</item>
+        <item name="android:textColor">@color/accent2</item>
     </style>
     <!--    Btn fill up-->
     <style name="Widget.PointEMaterialX.Button" parent="Widget.MaterialComponents.Button.OutlinedButton">
-        <item name="android:minHeight">60dp</item>
         <item name="android:elevation">4dp</item>
-        <item name="android:textColor">@color/grey</item>
+        <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">24sp</item>
-        <item name="backgroundTint">@color/yellow</item>
+        <item name="backgroundTint">@color/accent</item>
     </style>
 
     <!--    btn txt-->
     <style name="Widget.PointEMaterialX.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="android:textColor">@color/grey</item>
+        <item name="android:textColor">@color/dark</item>
         <item name="android:textSize">14sp</item>
     </style>
 

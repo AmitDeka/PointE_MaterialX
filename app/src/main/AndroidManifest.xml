@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.PointEMaterialX">
+        <activity android:name=".AboutActivity"></activity>
         <activity android:name=".NoteDetailActivity" />
         <activity android:name=".common.SignupActivity" />
         <activity android:name=".common.ForgotPasswordActivity" />
@@ -16,7 +17,6 @@
         <activity android:name=".SettingPrefActivity" />
         <activity android:name=".AddNoteActivity" />
         <activity android:name=".DashboardActivity" />
-
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

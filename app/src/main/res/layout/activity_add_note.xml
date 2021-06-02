@@ -19,7 +19,6 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/add_note_toolbar"
             android:layout_width="match_parent"
-            style="@style/Widget.PointEMaterialX.Toolbar"
             android:layout_height="?attr/actionBarSize"
             app:menu="@menu/add_note_menu"
             app:navigationIcon="@drawable/ic_arrow_back"

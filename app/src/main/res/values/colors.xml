@@ -11,6 +11,13 @@
     <color name="yellow">#faf861</color>
     <color name="orange">#df6c53</color>
 
+    <color name="light">#F4F6FF</color>
+    <color name="dark">#07031A</color>
+    <color name="accent">#FBD46D</color>
+    <color name="accent2">#4F8A8B</color>
+
+
+
     <color name="purple_randf">#AB47BC</color>
     <color name="blue_randf">#42a5f5</color>
     <color name="cyan_randf">#26C6DA</color>

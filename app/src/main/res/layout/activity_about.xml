@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingPrefActivity"
-    android:orientation="vertical">
+    tools:context=".AboutActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/add_note_appbar"
+        android:id="@+id/note_appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,26 +19,27 @@
             android:id="@+id/note_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:navigationIcon="@drawable/ic_arrow_back"
             app:title="@string/app_name" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout android:id="@+id/settings_frame"
+    <com.google.android.material.card.MaterialCardView
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:padding="10dp">
 
-    <LinearLayout android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:orientation="vertical">
-
-        <Button android:id="@+id/btn_log_out"
+        <TextView android:layout_height="match_parent"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="15dp"
-            android:text="@string/log_out"/>
+            android:text="@string/app_name"
+            android:textSize="24sp"/>
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/app_version"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:text=""/>
 
+    </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
