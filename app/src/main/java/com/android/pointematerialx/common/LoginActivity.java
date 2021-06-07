@@ -12,7 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.pointematerialx.R;
+import com.android.pointematerialx.*;
 import com.android.pointematerialx.DashboardActivity;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;

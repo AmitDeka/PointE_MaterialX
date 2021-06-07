@@ -41,5 +41,7 @@
     <string name="note_title">Title</string>
     <string name="note_content">Note</string>
     <string name="log_out">Log Out</string>
+    <string name="copy_right">Copyrights %1$d</string>
+    <string name="about_desc">This is a Simple Note Taking android application Build with AndroidX and Material Design.</string>
 
 </resources>

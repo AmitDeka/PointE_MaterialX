@@ -1,5 +1,6 @@
 package com.android.pointematerialx;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -21,9 +23,14 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class NoteDetailActivity extends AppCompatActivity {
@@ -39,15 +46,15 @@ public class NoteDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_detail);
 
-        final String[] darkModeValues = getResources().getStringArray(R.array.dark_mode_values);
-        String pref = PreferenceManager.getDefaultSharedPreferences(this)
-                .getString(getString(R.string.dark_mode), getString(R.string.dark_mode_def_value));
-        if (pref.equals(darkModeValues[0]))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        if (pref.equals(darkModeValues[1]))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        if (pref.equals(darkModeValues[2]))
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        final String[] darkModeValues = getResources().getStringArray(R.array.dark_mode_values);
+//        String pref = PreferenceManager.getDefaultSharedPreferences(this)
+//                .getString(getString(R.string.dark_mode), getString(R.string.dark_mode_def_value));
+//        if (pref.equals(darkModeValues[0]))
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+//        if (pref.equals(darkModeValues[1]))
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        if (pref.equals(darkModeValues[2]))
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 
 
         MaterialToolbar materialToolbar = findViewById(R.id.add_note_toolbar);
@@ -71,6 +78,16 @@ public class NoteDetailActivity extends AppCompatActivity {
 
         editTitle.setText(noteTitle);
         editContent.setText(noteContent);
+
+        TextView showEditDate = findViewById(R.id.note_date);
+
+        DocumentReference docRef = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").document(data.getStringExtra("noteId"));
+        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                showEditDate.setText(value.getString("date"));
+            }
+        });
     }
 
     public boolean onCreateOptionsMenu(Menu menu){
@@ -98,10 +115,16 @@ public class NoteDetailActivity extends AppCompatActivity {
         String nTitle = editTitle.getText().toString();
         String nContent = editContent.getText().toString();
 
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.getDefault());
+        String nDateString = sdf.format(date);
+
+
         DocumentReference docRef = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").document(data.getStringExtra("noteId"));
         Map<String, Object> note = new HashMap<>();
         note.put("title", nTitle);
         note.put("content", nContent);
+        note.put("date", nDateString);
 
         docRef.update(note).addOnSuccessListener(unused -> Snackbar.make(noteDetailActivity, "Note has been edited successfully.", Snackbar.LENGTH_SHORT).show())
                 .addOnFailureListener(e -> Snackbar.make(noteDetailActivity, "Note can not be saved.", Snackbar.LENGTH_SHORT).show());

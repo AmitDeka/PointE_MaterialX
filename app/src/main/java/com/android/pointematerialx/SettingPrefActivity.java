@@ -29,7 +29,7 @@ public class SettingPrefActivity extends AppCompatActivity implements SharedPref
                 .replace(R.id.settings_frame, new SettingsFragment())
                 .commit();
 
-        MaterialToolbar materialToolbar = findViewById(R.id.note_toolbar);
+        MaterialToolbar materialToolbar = findViewById(R.id.note_set_toolbar);
         setSupportActionBar(materialToolbar);
 
         mAuth = FirebaseAuth.getInstance();

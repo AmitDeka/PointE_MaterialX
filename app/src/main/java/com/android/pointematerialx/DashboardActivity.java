@@ -47,10 +47,8 @@ public class DashboardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dashboard);
 
         final String[] darkModeValues = getResources().getStringArray(R.array.dark_mode_values);
-        // The apps theme is decided depending upon the saved preferences on app startup
         String pref = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(getString(R.string.dark_mode), getString(R.string.dark_mode_def_value));
-        // Comparing to see which preference is selected and applying those theme settings
         if (pref.equals(darkModeValues[0]))
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         if (pref.equals(darkModeValues[1]))
@@ -69,7 +67,7 @@ public class DashboardActivity extends AppCompatActivity {
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         fStore = FirebaseFirestore.getInstance();
 
-        Query query = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").orderBy("title", Query.Direction.DESCENDING);
+        Query query = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").orderBy("date", Query.Direction.DESCENDING);
 
         FirestoreRecyclerOptions<NoteAdapter> allNotes = new FirestoreRecyclerOptions.Builder<NoteAdapter>().setQuery(query, NoteAdapter.class).build();
 

@@ -7,13 +7,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.preference.PreferenceManager;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -22,7 +26,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 
@@ -39,10 +45,8 @@ public class AddNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_note);
 
         final String[] darkModeValues = getResources().getStringArray(R.array.dark_mode_values);
-        // The apps theme is decided depending upon the saved preferences on app startup
         String pref = PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(getString(R.string.dark_mode), getString(R.string.dark_mode_def_value));
-        // Comparing to see which preference is selected and applying those theme settings
         if (pref.equals(darkModeValues[0]))
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         if (pref.equals(darkModeValues[1]))
@@ -64,6 +68,12 @@ public class AddNoteActivity extends AppCompatActivity {
         addNoteActivity = findViewById(R.id.add_Note_Activity);
         addTitle = findViewById(R.id.add_note_title);
         addContent = findViewById(R.id.add_note_content);
+
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.getDefault());
+        String dateString = sdf.format(date);
+        TextView shwDate = findViewById(R.id.add_note_date);
+        shwDate.setText(dateString);
 
     }
 
@@ -93,13 +103,20 @@ public class AddNoteActivity extends AppCompatActivity {
         String nTitle = addTitle.getText().toString();
         String nContent = addContent.getText().toString();
 
+        long date = System.currentTimeMillis();
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.getDefault());
+        String nDateString = sdf.format(date);
+
+
         DocumentReference documentReference = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").document();
         Map<String, Object> note = new HashMap<>();
         note.put("title", nTitle);
         note.put("content", nContent);
+        note.put("date", nDateString);
 
-        documentReference.set(note).addOnSuccessListener(unused -> Snackbar.make(addNoteActivity, "Note has been added Succesfully.", Snackbar.LENGTH_SHORT).show())
-                .addOnFailureListener(e -> Snackbar.make(addNoteActivity, "Note can not be saved.", Snackbar.LENGTH_SHORT).show());
+         documentReference.set(note).addOnSuccessListener(unused -> Snackbar.make(addNoteActivity, "Note has been added Successfully.", Snackbar.LENGTH_SHORT).show())
+                 .addOnFailureListener(e -> Snackbar.make(addNoteActivity, "Note can not be saved.", Snackbar.LENGTH_SHORT).show());
+
     }
 
     private void CloseKeyboard(){
