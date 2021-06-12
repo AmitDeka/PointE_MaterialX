@@ -1,11 +1,16 @@
 package com.android.pointematerialx.utils;
 
+import com.google.firebase.database.Exclude;
+
 public class AdapterModel {
     private String title;
     private String content;
     private String date;
+    @Exclude
+    public String documentId;
 
-    public AdapterModel() { } //for firebase
+    public AdapterModel() {
+    }
 
     public AdapterModel(String title, String content, String date) {
         this.title = title;
@@ -36,4 +41,12 @@ public class AdapterModel {
     public void setDate(String date) {
         this.date = date;
     }
+
+    @Exclude
+    public String getDocumentId(){
+        return documentId;
+    }
+     public void setDocumentId(String documentId){
+        this.documentId = documentId;
+     }
 }

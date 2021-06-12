@@ -1,11 +1,5 @@
 package com.android.pointematerialx;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.preference.PreferenceManager;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +11,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.snackbar.Snackbar;
@@ -83,12 +81,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         TextView showEditDate = findViewById(R.id.note_date);
 
         DocumentReference docRef = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").document(data.getStringExtra("noteId"));
-        docRef.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                showEditDate.setText(value.getString("date"));
-            }
-        });
+        docRef.addSnapshotListener(this, (value, error) -> showEditDate.setText(value.getString("date")));
     }
 
     public boolean onCreateOptionsMenu(Menu menu){

@@ -2,6 +2,7 @@ package com.android.pointematerialx;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,9 +22,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.android.pointematerialx.utils.AdapterModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,15 +36,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static android.content.ContentValues.TAG;
+
 public class DashboardActivity extends AppCompatActivity {
-
-
     ImageView noNotesImg;
     FirebaseFirestore fStore;
     FirebaseUser fUser;
-
     RecyclerView noteRecyclerView;
 
+    private CoordinatorLayout mDashboard;
     private FirestoreRecyclerAdapter<AdapterModel, DashNoteViewHolder> NoteViewAdapter;
 
     @Override
@@ -64,7 +68,8 @@ public class DashboardActivity extends AppCompatActivity {
         BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
         FloatingActionButton btnAdd = findViewById(R.id.floating_addbtn);
 
-        noNotesImg =findViewById(R.id.dash_no_notes);
+        mDashboard = findViewById(R.id.dash_board);
+        noNotesImg = findViewById(R.id.dash_no_notes);
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         fStore = FirebaseFirestore.getInstance();
@@ -75,7 +80,16 @@ public class DashboardActivity extends AppCompatActivity {
         noteRecyclerView = findViewById(R.id.dash_note_recycle_view);
         noteRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-        FirestoreRecyclerOptions<AdapterModel> mAdapterModel = new FirestoreRecyclerOptions.Builder<AdapterModel>().setQuery(query, AdapterModel.class).build();
+
+        FirestoreRecyclerOptions<AdapterModel> mAdapterModel = new FirestoreRecyclerOptions.Builder<AdapterModel>().setQuery(query, snapshot -> {
+            AdapterModel AModel = snapshot.toObject(AdapterModel.class);
+            AModel.setDocumentId(snapshot.getId());
+            return AModel;
+        }).setLifecycleOwner(this).build();
+
+//        FirestoreRecyclerOptions<AdapterModel> mAdapterModel = new FirestoreRecyclerOptions.Builder<AdapterModel>().setQuery(query, AdapterModel.class).build();
+
+
         NoteViewAdapter = new FirestoreRecyclerAdapter<AdapterModel, DashNoteViewHolder>(mAdapterModel) {
             @NonNull
             @Override
@@ -88,6 +102,7 @@ public class DashboardActivity extends AppCompatActivity {
             protected void onBindViewHolder(@NonNull DashboardActivity.DashNoteViewHolder holder, int position, @NonNull AdapterModel model) {
                 holder.noteTitle.setText(model.getTitle());
                 holder.noteContent.setText(model.getContent());
+                holder.itemView.setTag(model.documentId);
                 final int colorCode = getRandomColor();
                 holder.noteBar.setBackgroundColor(holder.view.getResources().getColor(colorCode, null));
                 final String docID = NoteViewAdapter.getSnapshots().getSnapshot(position).getId();
@@ -114,25 +129,40 @@ public class DashboardActivity extends AppCompatActivity {
                 }
             }
 
+
         };
         noteRecyclerView.setAdapter(NoteViewAdapter);
 
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpCallback);
-//        itemTouchHelper.attachToRecyclerView(noteRecyclerView);
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
-//        ItemTouchHelper.SimpleCallback simpCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
-//            @Override
-//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//                return false;
-//            }
-//
-//            @Override
-//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//                NoteViewAdapter.DashNoteViewHolder
-//            }
-//        };
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpCallback);
-//        itemTouchHelper.attachToRecyclerView(noteRecyclerView);
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                String documentId = (String) viewHolder.itemView.getTag();
+                fStore.collection("AllNotes")
+                        .document(fUser.getUid())
+                        .collection("UserNotes")
+                        .document(documentId)
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Snackbar.make(mDashboard, "Note deleted successfully.", Snackbar.LENGTH_LONG)
+                                        .setAction("Undo", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+
+                                            }
+                                        })
+                                        .show();
+                            }
+                        })
+                        .addOnFailureListener(e -> Log.d(TAG, "onFailure: " + e.getLocalizedMessage()));
+            }
+        }).attachToRecyclerView(noteRecyclerView);
 
         btnAdd.setOnClickListener(v -> {
             Intent addNote = new Intent(DashboardActivity.this, AddNoteActivity.class);
@@ -158,7 +188,7 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-    public static class DashNoteViewHolder extends RecyclerView.ViewHolder{
+    public static class DashNoteViewHolder extends RecyclerView.ViewHolder {
         TextView noteTitle, noteContent;
         View view, noteBar;
 
