@@ -43,5 +43,7 @@
     <string name="log_out">Log Out</string>
     <string name="copy_right">Copyrights %1$d</string>
     <string name="about_desc">This is a Simple Note Taking android application Build with AndroidX and Material Design.</string>
+    <string name="no_notes">Dash No Notes</string>
+    <string name="start_writing">Start writing Notes !</string>
 
 </resources>

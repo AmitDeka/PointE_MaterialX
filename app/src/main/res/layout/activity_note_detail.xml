@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/note_detail_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NoteDetailActivity"
-    android:id="@+id/note_detail_activity">
+    tools:context=".NoteDetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/add_note_appbar"
@@ -39,48 +39,52 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:paddingHorizontal="15dp"
-            android:paddingVertical="10dp">
+            android:paddingVertical="10dp"
+            app:layout_constraintBottom_toBottomOf="parent">
+
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/detail_note_title"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
+                android:layout_marginStart="10dp"
+                android:background="@color/Transparent"
                 android:fontFamily="@font/ubuntu_bold"
                 android:inputType="textCapSentences"
-                android:textStyle="bold"
                 android:textSize="30sp"
-                android:background="@color/Transparent"/>
+                android:textStyle="bold" />
+
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/detail_note_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:fontFamily="@font/ubuntu"
-                android:textSize="24sp"
-                android:layout_marginBottom="20dp"
                 android:layout_marginTop="10dp"
-                android:textStyle="normal"
-                android:lineSpacingExtra="4dp"
+                android:layout_marginBottom="20dp"
+                android:background="@color/Transparent"
+                android:fontFamily="@font/ubuntu"
                 android:gravity="top"
-                app:layout_constraintTop_toBottomOf="@id/add_note_title"
-                android:background="@color/Transparent"/>
+                android:lineSpacingExtra="4dp"
+                android:textSize="24sp"
+                android:textStyle="normal"
+                app:layout_constraintTop_toBottomOf="@id/add_note_title" />
 
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
-    <TextView android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/note_date"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:textSize="14sp"
-        android:id="@+id/note_date"
         android:layout_marginBottom="10dp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Edited Today 20.14"/>
+        tools:text="Edited Today 20.14" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

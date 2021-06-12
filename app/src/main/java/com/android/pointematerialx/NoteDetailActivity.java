@@ -76,6 +76,7 @@ public class NoteDetailActivity extends AppCompatActivity {
         String noteTitle = data.getStringExtra("title");
         String noteContent = data.getStringExtra("content");
 
+
         editTitle.setText(noteTitle);
         editContent.setText(noteContent);
 

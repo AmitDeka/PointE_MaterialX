@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/light</item>
         <item name="colorPrimaryDark">@color/light</item>
         <item name="colorAccent">@color/accent</item>
+        <item name="colorControlNormal">@color/dark</item>
 
 <!--        <item name="android:textColorPrimary">@color/dark</item>-->
         <!--        <item name="colorPrimaryVariant">@color/purple_700</item>-->
@@ -25,10 +26,10 @@
         <item name="cornerSize">5dp</item>
     </style>
 <!--    Toolbar-->
-    <style name="Widget.PointEMaterialX.Toolbar" parent="Widget.MaterialComponents.Toolbar">
-        <item name="android:background">?attr/colorPrimary</item>
+    <style name="Widget.PointEMaterialX.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary">
         <item name="android:backgroundTint">?attr/colorOnPrimary</item>
         <item name="android:theme">@style/Theme.PointEMaterialX</item>
+        <item name="android:elevation" tools:ignore="NewApi">8dp</item>
     </style>
 
     <!--    bottom bar-->

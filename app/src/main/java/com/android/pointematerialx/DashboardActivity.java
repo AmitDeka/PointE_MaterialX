@@ -1,25 +1,23 @@
 package com.android.pointematerialx;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.Toolbar;
-import androidx.preference.PreferenceManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.pointematerialx.utils.NoteAdapter;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.preference.PreferenceManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.android.pointematerialx.utils.AdapterModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -36,10 +34,14 @@ import java.util.Random;
 
 public class DashboardActivity extends AppCompatActivity {
 
-    RecyclerView noteList;
+
+    ImageView noNotesImg;
     FirebaseFirestore fStore;
     FirebaseUser fUser;
-    FirestoreRecyclerAdapter<NoteAdapter, NoteViewHolder> NoteAdapter;
+
+    RecyclerView noteRecyclerView;
+
+    private FirestoreRecyclerAdapter<AdapterModel, DashNoteViewHolder> NoteViewAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,47 +64,75 @@ public class DashboardActivity extends AppCompatActivity {
         BottomAppBar bottomAppBar = findViewById(R.id.bottomAppBar);
         FloatingActionButton btnAdd = findViewById(R.id.floating_addbtn);
 
-        noteList = findViewById(R.id.dash_recycle_view);
+        noNotesImg =findViewById(R.id.dash_no_notes);
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         fStore = FirebaseFirestore.getInstance();
 
+
         Query query = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").orderBy("date", Query.Direction.DESCENDING);
 
-        FirestoreRecyclerOptions<NoteAdapter> allNotes = new FirestoreRecyclerOptions.Builder<NoteAdapter>().setQuery(query, NoteAdapter.class).build();
+        noteRecyclerView = findViewById(R.id.dash_note_recycle_view);
+        noteRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
 
-        NoteAdapter = new FirestoreRecyclerAdapter<NoteAdapter, NoteViewHolder>(allNotes) {
+        FirestoreRecyclerOptions<AdapterModel> mAdapterModel = new FirestoreRecyclerOptions.Builder<AdapterModel>().setQuery(query, AdapterModel.class).build();
+        NoteViewAdapter = new FirestoreRecyclerAdapter<AdapterModel, DashNoteViewHolder>(mAdapterModel) {
+            @NonNull
             @Override
-            protected void onBindViewHolder(@NonNull NoteViewHolder noteViewHolder, int i, @NonNull NoteAdapter noteAdapter) {
-                noteViewHolder.noteTitle.setText(noteAdapter.getTitle());
-                noteViewHolder.noteContent.setText(noteAdapter.getContent());
-                final int colorCode = getRandomColor();
-                noteViewHolder.noteBar.setBackgroundColor(noteViewHolder.view.getResources().getColor(colorCode, null));
-                final String docId =NoteAdapter.getSnapshots().getSnapshot(i).getId();
+            public DashNoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_view_layout, parent, false);
+                return new DashNoteViewHolder(view);
+            }
 
-                noteViewHolder.view.setOnClickListener(v -> {
+            @Override
+            protected void onBindViewHolder(@NonNull DashboardActivity.DashNoteViewHolder holder, int position, @NonNull AdapterModel model) {
+                holder.noteTitle.setText(model.getTitle());
+                holder.noteContent.setText(model.getContent());
+                final int colorCode = getRandomColor();
+                holder.noteBar.setBackgroundColor(holder.view.getResources().getColor(colorCode, null));
+                final String docID = NoteViewAdapter.getSnapshots().getSnapshot(position).getId();
+
+                holder.view.setOnClickListener(v -> {
                     Intent intent = new Intent(v.getContext(), NoteDetailActivity.class);
-                    intent.putExtra("title", noteAdapter.getTitle());
-                    intent.putExtra("content", noteAdapter.getContent());
+                    intent.putExtra("title", model.getTitle());
+                    intent.putExtra("content", model.getContent());
                     intent.putExtra("code", colorCode);
-                    intent.putExtra("noteId", docId);
+                    intent.putExtra("noteId", docID);
                     v.getContext().startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 });
-
-
             }
 
-            @NonNull
             @Override
-            public NoteViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_view_layout, parent, false);
-                return new NoteViewHolder(view);
+            public void onDataChanged() {
+                if (NoteViewAdapter.getItemCount() == 0) {
+                    noNotesImg.setVisibility(View.VISIBLE);
+                    noteRecyclerView.setVisibility(View.INVISIBLE);
+                } else {
+                    noNotesImg.setVisibility(View.GONE);
+                    noteRecyclerView.setVisibility(View.VISIBLE);
+                }
             }
-        };
 
-        noteList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        noteList.setAdapter(NoteAdapter);
+        };
+        noteRecyclerView.setAdapter(NoteViewAdapter);
+
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpCallback);
+//        itemTouchHelper.attachToRecyclerView(noteRecyclerView);
+
+//        ItemTouchHelper.SimpleCallback simpCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT ) {
+//            @Override
+//            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+//                return false;
+//            }
+//
+//            @Override
+//            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+//                NoteViewAdapter.DashNoteViewHolder
+//            }
+//        };
+//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpCallback);
+//        itemTouchHelper.attachToRecyclerView(noteRecyclerView);
 
         btnAdd.setOnClickListener(v -> {
             Intent addNote = new Intent(DashboardActivity.this, AddNoteActivity.class);
@@ -128,11 +158,11 @@ public class DashboardActivity extends AppCompatActivity {
         });
     }
 
-    public static class NoteViewHolder extends RecyclerView.ViewHolder {
+    public static class DashNoteViewHolder extends RecyclerView.ViewHolder{
         TextView noteTitle, noteContent;
         View view, noteBar;
 
-        public NoteViewHolder(@NonNull View itemView) {
+        public DashNoteViewHolder(@NonNull View itemView) {
             super(itemView);
             noteTitle = itemView.findViewById(R.id.note_title);
             noteContent = itemView.findViewById(R.id.note_content);
@@ -160,14 +190,15 @@ public class DashboardActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        NoteAdapter.startListening();
+        NoteViewAdapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (NoteAdapter != null) {
-            NoteAdapter.stopListening();
+        if (NoteViewAdapter != null) {
+            NoteViewAdapter.stopListening();
         }
     }
+
 }

@@ -65,7 +65,8 @@ public class SignupActivity extends AppCompatActivity {
         if (validEmail() & validPass() & validConPass()) {
             mAuth.createUserWithEmailAndPassword(umail, upass).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    sendVerifyMail();
+//                    sendVerifyMail();
+                    SendToLogin();
                 } else {
                     if (task.getException() instanceof FirebaseAuthUserCollisionException) {
                         Snackbar.make(signlayout, "Email is already registered.", Snackbar.LENGTH_LONG).show();
@@ -75,22 +76,29 @@ public class SignupActivity extends AppCompatActivity {
         }
     }
 
-    private void sendVerifyMail() {
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        String uid = firebaseUser.getUid();
-        if (firebaseUser != null) {
-            firebaseUser.sendEmailVerification().addOnCompleteListener(task -> {
-                Snackbar.make(signlayout, "Verification mail have been send to " + firebaseUser.getEmail(), Snackbar.LENGTH_INDEFINITE).setAction("Ok", v -> {
-                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    mAuth.signOut();
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                }).show();
-            });
-        } else {
-            Snackbar.make(signlayout, "Failed to send verification mail.", Snackbar.LENGTH_LONG).show();
-        }
+    private void SendToLogin() {
+        Intent stLog = new Intent(SignupActivity.this, LoginActivity.class);
+        startActivity(stLog);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
+//    private void sendVerifyMail() {
+//        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+//        String uid = firebaseUser.getUid();
+//        if (firebaseUser != null) {
+//            firebaseUser.sendEmailVerification().addOnCompleteListener(task -> {
+//                Snackbar.make(signlayout, "Verification mail have been send to " + firebaseUser.getEmail(), Snackbar.LENGTH_INDEFINITE).setAction("Ok", v -> {
+//                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+//                    startActivity(intent);
+//                    mAuth.signOut();
+//                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                }).show();
+//            });
+//        } else {
+//            Snackbar.make(signlayout, "Failed to send verification mail.", Snackbar.LENGTH_LONG).show();
+//        }
+//    }
 
     private boolean validEmail() {
         String val = signupemail.getEditText().getText().toString().trim();

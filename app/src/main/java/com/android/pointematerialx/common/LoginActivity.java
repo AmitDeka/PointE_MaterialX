@@ -80,7 +80,8 @@ public class LoginActivity extends AppCompatActivity {
         if (validEmail() & validPass()) {
             mAuth.signInWithEmailAndPassword(umail, upass).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    checkMailVerify();
+//                    checkMailVerify();
+                    SendToDash();
                 } else {
                     if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                         Snackbar.make(logLayout, "Couldn't find your Account.", Snackbar.LENGTH_LONG).show();
@@ -93,17 +94,24 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void checkMailVerify() {
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if (firebaseUser.isEmailVerified()) {
-            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
-            finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-        } else {
-            Snackbar.make(logLayout, "Verify your email first.", Snackbar.LENGTH_LONG).show();
-            mAuth.signOut();
-        }
+    private void SendToDash() {
+        Intent stdash = new Intent(LoginActivity.this, DashboardActivity.class);
+        startActivity(stdash);
+        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
+
+//    private void checkMailVerify() {
+//        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+//        if (firebaseUser.isEmailVerified()) {
+//            startActivity(new Intent(LoginActivity.this, DashboardActivity.class));
+//            finish();
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        } else {
+//            Snackbar.make(logLayout, "Verify your email first.", Snackbar.LENGTH_LONG).show();
+//            mAuth.signOut();
+//        }
+//    }
 
     private boolean validEmail() {
         String email = usrmail.getEditText().getText().toString().trim();
@@ -146,7 +154,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis()) {
             super.onBackPressed();
-            return;
         } else {
             Toast.makeText(getBaseContext(), "Please click BACK again to exit", Toast.LENGTH_LONG).show();
             mBackPressed = System.currentTimeMillis();

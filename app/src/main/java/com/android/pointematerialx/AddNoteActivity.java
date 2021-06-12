@@ -57,7 +57,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
         MaterialToolbar materialToolbar = findViewById(R.id.add_note_toolbar);
         setSupportActionBar(materialToolbar);
-        if ( getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
@@ -78,15 +78,15 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.add_note_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()){
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.note_add_fav:
                 Toast.makeText(AddNoteActivity.this, "Fav Click", Toast.LENGTH_SHORT).show();
                 return true;
@@ -107,29 +107,31 @@ public class AddNoteActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy h:mm a", Locale.getDefault());
         String nDateString = sdf.format(date);
 
+        if (nTitle.isEmpty() || nContent.isEmpty()) {
+            Snackbar.make(addNoteActivity, "Note can not be saved with empty fields.", Snackbar.LENGTH_SHORT).show();
+        } else {
+            DocumentReference documentReference = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").document();
+            Map<String, Object> note = new HashMap<>();
+            note.put("title", nTitle);
+            note.put("content", nContent);
+            note.put("date", nDateString);
 
-        DocumentReference documentReference = fStore.collection("AllNotes").document(fUser.getUid()).collection("UserNotes").document();
-        Map<String, Object> note = new HashMap<>();
-        note.put("title", nTitle);
-        note.put("content", nContent);
-        note.put("date", nDateString);
-
-         documentReference.set(note).addOnSuccessListener(unused -> Snackbar.make(addNoteActivity, "Note has been added Successfully.", Snackbar.LENGTH_SHORT).show())
-                 .addOnFailureListener(e -> Snackbar.make(addNoteActivity, "Note can not be saved.", Snackbar.LENGTH_SHORT).show());
-
+            documentReference.set(note).addOnSuccessListener(unused -> Snackbar.make(addNoteActivity, "Note has been added Successfully.", Snackbar.LENGTH_SHORT).show())
+                    .addOnFailureListener(e -> Snackbar.make(addNoteActivity, "Note can not be saved.", Snackbar.LENGTH_SHORT).show());
+        }
     }
 
-    private void CloseKeyboard(){
+    private void CloseKeyboard() {
         View view = this.getCurrentFocus();
-        if (view != null){
+        if (view != null) {
             InputMethodManager methodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 
-            methodManager.hideSoftInputFromWindow(view.getWindowToken(),0);
+            methodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
     @Override
-    public boolean onSupportNavigateUp(){
+    public boolean onSupportNavigateUp() {
         onBackPressed();
         finish();
         return true;

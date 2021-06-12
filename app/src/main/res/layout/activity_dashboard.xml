@@ -22,12 +22,21 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <ImageView
+        android:id="@+id/dash_no_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:contentDescription="@string/no_notes"
+        android:src="@drawable/intro_notes"
+        android:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/dash_recycle_view"
+        android:id="@+id/dash_note_recycle_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="65dp"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="30dp" />
 
 
     <com.google.android.material.bottomappbar.BottomAppBar
